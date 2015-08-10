@@ -5,7 +5,7 @@
 It's recommended that you use [Composer](https://getcomposer.org/) to install Aura.Di Slim Container.
 
 ```bash
-composer require ackee/auradi-slim-container
+composer require ackee/aura-di-slim-container
 ```
 
 ## Usage
