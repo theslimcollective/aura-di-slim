@@ -1,0 +1,11 @@
+{
+    "name": "ackee/auradi-slim-container",
+    "autoload": {
+        "psr-4": {
+            "Ackee\\AuraDiSlimContainer\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5.0"
+    }
+}
