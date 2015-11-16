@@ -5,7 +5,7 @@
 It's recommended that you use [Composer](https://getcomposer.org/) to install Aura.Di Slim Container.
 
 ```bash
-composer require ackee/aura-di-slim-container
+composer require collective/aura-di-slim
 ```
 
 ## Usage
@@ -13,14 +13,14 @@ composer require ackee/aura-di-slim-container
 #### Basic Setup
 
 ```php
-$container = Ackee\AuraDiSlimContainer\ContainerBootstrap::setup();
+$container = Collective\AuraDiSlim\ContainerBootstrap::setup();
 $app = new Slim\App($container);
 ```
 
 #### Advanced Setup with auto-wiring
 
 ```php
-$container = Ackee\AuraDiSlimContainer\ContainerBootstrap::setup(true);
+$container = Collective\AuraDiSlim\ContainerBootstrap::setup(true);
 $app = new Slim\App($container);
 ```
 

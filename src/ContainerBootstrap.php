@@ -1,12 +1,6 @@
 <?php
-/**
- * An extension to Aura.Di to integrate it with Slim 3
- *
- * @link      https://github.com/ackeephp/auradi-slim-container
- * @copyright Copyright © 2015 Andrew Smith
- * @license   https://github.com/ackee/auradi-slim-container/LICENSE (MIT License)
- */
-namespace Ackee\AuraDiSlimContainer;
+
+namespace Collective\AuraDiSlim;
 
 use Aura\Di\Container;
 use Aura\Di\ContainerBuilder;
@@ -16,11 +10,12 @@ class ContainerBootstrap
     /**
      * @return \Aura\Di\Container
      */
-    public static function setup($autoResolve = false)
+    public static function setup($autoResolve = false, $userSettings = [])
     {
         $builder = new ContainerBuilder();
         $di = $builder->newInstance($autoResolve);
-        $config = $di->newInstance('Ackee\AuraDiSlimContainer\SlimConfig');
+        $di->values['userSettings'] = $userSettings;
+        $config = $di->newInstance('Collective\AuraDiSlim\SlimConfig');
         $config->define($di);
 
         if ($autoResolve) {

@@ -1,12 +1,6 @@
 <?php
-/**
- * An extension to Aura.Di to integrate it with Slim 3
- *
- * @link      https://github.com/ackeephp/auradi-slim-container
- * @copyright Copyright © 2015 Andrew Smith
- * @license   https://github.com/ackee/auradi-slim-container/LICENSE (MIT License)
- */
-namespace Ackee\AuraDiSlimContainer;
+
+namespace Collective\AuraDiSlim;
 
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
@@ -29,15 +23,11 @@ class SlimConfig extends ContainerConfig
      * @var array
      */
     private $defaultSettings = [
-        'cookieLifetime' => '20 minutes',
-        'cookiePath' => '/',
-        'cookieDomain' => null,
-        'cookieSecure' => false,
-        'cookieHttpOnly' => false,
         'httpVersion' => '1.1',
         'responseChunkSize' => 4096,
         'outputBuffering' => 'append',
         'determineRouteBeforeAppMiddleware' => false,
+        'displayErrorDetails' => false,
     ];
 
     /**
@@ -51,12 +41,12 @@ class SlimConfig extends ContainerConfig
      */
     public function define(Container $di)
     {
-        $defaultSettings = $this->defaultSettings;
-
-        $di->set('settings', function () use ($di, $defaultSettings) {
-            $userSettings = $di->has('userSettings') ? $di->get('userSettings') : [];
-            return array_merge($defaultSettings, $userSettings);
-        });
+        $di->set('settings', $di->newInstance(\Slim\Collection::class, [
+            'items' => array_merge(
+                $this->defaultSettings, 
+                $di->values['userSettings']
+            )
+        ]));
 
         /**
          * This service MUST return a shared instance
@@ -67,7 +57,7 @@ class SlimConfig extends ContainerConfig
         $di->set(
             'environment',
             $di->lazyNew(
-                'Slim\Http\Environment',
+                \Slim\Http\Environment::class,
                 [
                     'items' => $_SERVER
                 ]
@@ -118,7 +108,7 @@ class SlimConfig extends ContainerConfig
          *
          * @return RouterInterface
          */
-        $di->set('router', $di->lazyNew('Slim\Router'));
+        $di->set('router', $di->lazyNew(\Slim\Router::class));
 
         /**
          * This service MUST return a SHARED instance
@@ -126,7 +116,7 @@ class SlimConfig extends ContainerConfig
          *
          * @return InvocationStrategyInterface
          */
-        $di->set('foundHandler', $di->lazyNew('Slim\Handlers\Strategies\RequestResponse'));
+        $di->set('foundHandler', $di->lazyNew(\Slim\Handlers\Strategies\RequestResponse::class));
 
         /**
          * This service MUST return a callable
@@ -141,7 +131,9 @@ class SlimConfig extends ContainerConfig
          *
          * @return callable
          */
-        $di->set('errorHandler', $di->lazyNew('Slim\Handlers\Error'));
+        $di->set('errorHandler', $di->lazyNew(\Slim\Handlers\Error::class, [
+            'displayErrorDetails' => $di->get('settings')['displayErrorDetails']
+        ])));
 
         /**
          * This service MUST return a callable
@@ -155,7 +147,7 @@ class SlimConfig extends ContainerConfig
          *
          * @return callable
          */
-        $di->set('notFoundHandler', $di->lazyNew('Slim\Handlers\NotFound'));
+        $di->set('notFoundHandler', $di->lazyNew(\Slim\Handlers\NotFound::class));
 
         /**
          * This service MUST return a callable
@@ -170,7 +162,7 @@ class SlimConfig extends ContainerConfig
          *
          * @return callable
          */
-        $di->set('notAllowedHandler', $di->lazyNew('Slim\Handlers\NotAllowed'));
+        $di->set('notAllowedHandler', $di->lazyNew(\Slim\Handlers\NotAllowed::class));
 
         /**
          * This service MUST return a NEW instance of
@@ -178,7 +170,7 @@ class SlimConfig extends ContainerConfig
          *
          * @return CallableResolverInterface
          */
-        $di->set('callableResolver', $di->newInstance('Slim\CallableResolver', [
+        $di->set('callableResolver', $di->newInstance(\Slim\CallableResolver::class, [
             'container' => $di
         ]));
     }

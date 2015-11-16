@@ -1,12 +1,12 @@
 {
-    "name": "ackee/aura-di-slim-container",
+    "name": "collective/aura-di-slim",
     "autoload": {
         "psr-4": {
-            "Ackee\\AuraDiSlimContainer\\": "src/"
+            "Collective\\AuraDiSlim\\": "src/"
         }
     },
     "require": {
         "php": ">=5.5.0",
-        "aura/di": "^3.0.0-beta1"
+        "aura/di": "3.0.0@beta"
     }
 }
