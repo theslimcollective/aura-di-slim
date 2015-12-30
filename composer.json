@@ -1,12 +1,20 @@
 {
     "name": "collective/aura-di-slim",
+    "description": "Aura.Di 3 setup for Slim Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrew Smith",
+            "email": "a.smith@silentworks.co.uk"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Collective\\AuraDiSlim\\": "src/"
         }
     },
     "require": {
-        "php": ">=5.5.0",
-        "aura/di": "3.0.0@beta"
+        "php": "^5.5",
+        "aura/di": "3.0.0-beta2"
     }
 }
